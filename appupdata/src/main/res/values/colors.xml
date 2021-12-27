@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="divider">#eeeeee</color>
+    <color name="gray">#e4e4e4</color>
+    <color name="transparent">#00000000</color>
+    <color name="shape_orange">#FF6041</color>
+    <color name="setting_btn">#0f7efc</color>
+
+
+</resources>

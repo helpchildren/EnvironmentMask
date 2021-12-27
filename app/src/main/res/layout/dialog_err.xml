@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="30dp"
+    android:paddingHorizontal="30dp"
+    android:paddingVertical="30dp"
+    android:background="@drawable/dialog_err_bg">
+
+    <ImageView
+        android:id="@+id/close_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:src="@drawable/icon_cancle" />
+
+    <ImageView
+        android:id="@+id/error_iv"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/error" />
+
+    <TextView
+        android:id="@+id/message_tv"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="3"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        tools:text="发货异常"/>
+
+
+</LinearLayout>

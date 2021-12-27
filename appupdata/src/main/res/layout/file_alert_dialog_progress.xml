@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radius_bg">
+
+        <TextView
+            android:id="@+id/progress_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:layout_marginEnd="10dip"
+            android:layout_marginTop="12dip"
+            android:layout_marginBottom="12dip"
+            android:textSize="16sp"/>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/progress_message"
+            android:background="@color/gray"/>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view"
+            android:layout_marginTop="20dip"
+            android:layout_marginBottom="1dip"
+            android:layout_marginStart="10dip"
+            android:layout_marginEnd="10dip"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/progress_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dip"
+            android:layout_marginStart="10dip"
+            android:layout_marginEnd="10dip"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/progress" />
+
+        <TextView
+            android:id="@+id/progress_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dip"
+            android:layout_marginStart="10dip"
+            android:layout_marginEnd="10dip"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/progress" />
+    </RelativeLayout>
+
+</RelativeLayout>

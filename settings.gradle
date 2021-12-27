@@ -1,0 +1,6 @@
+include ':hbanner'
+include ':appupdata'
+include ':machine'
+include ':okwebsocket'
+include ':app'
+rootProject.name = "EnvironmentMask"

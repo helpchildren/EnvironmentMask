@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="30dp"
+    android:background="@drawable/setting_ll_bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:id="@+id/ll_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/ed_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:id="@+id/ll_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Switch
+            android:visibility="gone"
+            android:id="@+id/s_Log"
+            style="@style/settingtextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="本地日志记录" />
+
+        <LinearLayout
+            style="@style/settingItem"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/settingtextview"
+                android:text="通讯串口:" />
+
+            <EditText
+                android:id="@+id/e_deviceserialPort"
+                style="@style/settingedittext"
+                android:hint="请输入串口号"
+                android:text="dev/ttyS0"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/settingItem"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/settingtextview"
+                android:text="服务地址:" />
+
+            <EditText
+                android:id="@+id/e_wsurl"
+                style="@style/settingedittext"
+                android:hint="请输入服务地址"
+                android:text="ws://47.93.97.68:2348"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/settingItem"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/settingtextview"
+                android:text="袋子长度（单位毫米）:" />
+
+            <EditText
+                android:id="@+id/e_outlen"
+                style="@style/settingedittext"
+                android:layout_weight="1"
+                android:hint="请输入出货长度"
+                android:text="229"
+                android:inputType="number" />
+
+            <TextView
+                style="@style/settingtextview"
+                android:text="口罩长度（单位毫米）:" />
+
+            <EditText
+                android:id="@+id/e_outlen_mask"
+                style="@style/settingedittext"
+                android:layout_weight="1"
+                android:hint="请输入出货长度"
+                android:text="210"
+                android:inputType="number" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/setting_btn_ok"
+            android:padding="10dp"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/setting_btn_ok"
+            android:padding="10dp"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</LinearLayout>
