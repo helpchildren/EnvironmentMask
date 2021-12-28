@@ -75,6 +75,7 @@ public class MainActivity extends BaseActivity {
     private final Gson gson = new Gson();
     private MachineManage machineManage;//硬件连接
     private String order_sn = "";
+    private String order_type = "";
 
     private List<AdvBean> mAdvList = new ArrayList<>();//本地广告列表
     private HBanner banner;//轮播
@@ -281,7 +282,8 @@ public class MainActivity extends BaseActivity {
         switch(msgBean.getType()){
             case MsgType.TYPE_OUT://出货
                 order_sn = msgBean.getOrder_sn();
-                int orderType = "1".equals(msgBean.getOrder_type())?1:0;
+                order_type = msgBean.getOrder_type();
+                int orderType = "1".equals(order_type)?1:0;
                 //调用硬件部分
                 machineManage.outGoods(orderType);
                 break;
@@ -335,6 +337,7 @@ public class MainActivity extends BaseActivity {
                     if (Validate.noNull(order_sn)){
                         MsgBean msgBean = new MsgBean("back");
                         msgBean.setOrder_sn(order_sn);
+                        msgBean.setOrder_type(order_type);
                         msgBean.setResult("2");
                         order_sn = "";
                         socketSend(msgBean);
@@ -357,6 +360,7 @@ public class MainActivity extends BaseActivity {
                     showText("出货成功");
                     MsgBean msgBean = new MsgBean("back");
                     msgBean.setOrder_sn(order_sn);
+                    msgBean.setOrder_type(order_type);
                     msgBean.setResult("1");
                     socketSend(msgBean);
 

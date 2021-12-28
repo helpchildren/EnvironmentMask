@@ -126,7 +126,7 @@ public class SQ800Machine extends MachineManage {
                                 listener.onError(1004,"出货失败:发生卡袋");
                                 break;
                             default:
-                                listener.onError(1005,"出货失败:通讯错误");
+                                listener.onError(1005,"出货失败:通讯错误 错误码："+ret);
                                 break;
                         }
                         reset = 0;//成功返回 重置恢复标志

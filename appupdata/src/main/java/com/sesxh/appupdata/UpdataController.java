@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 public class UpdataController {
 
     private final static String TAG = "UpdataController";
-    public static String updateUrl = "https://bag.cnwinall.cn/apk/apk.txt";
+    public static String updateUrl = "https://bag.cnwinall.cn/apk_aio/apk.txt";
 
     public static void setUpdateUrl(String updateUrl) {
         UpdataController.updateUrl = updateUrl;

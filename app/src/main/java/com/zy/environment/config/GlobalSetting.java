@@ -3,6 +3,7 @@ package com.zy.environment.config;
 import android.content.Context;
 import android.os.Environment;
 
+import com.sesxh.appupdata.UpdataController;
 import com.zy.environment.utils.SpStorage;
 
 public class GlobalSetting {
@@ -13,6 +14,8 @@ public class GlobalSetting {
 
     public static String wsurl = "ws://47.93.97.68:2348";//服务器地址
     public static String uploadUrl = "http://bag.cnwinall.cn/wechat/device/upload";//日志上传地址
+    public static String AppUpdateUrl = "https://bag.cnwinall.cn/apk_aio/apk.txt";//App更新地址
+
 
     public static String deviceid;//设备id
     public static String serialPort = "dev/ttyS0";//设备id
@@ -29,6 +32,8 @@ public class GlobalSetting {
         outLen = (Integer) mSp.getSharedPreference("outLen", outLen);
         outLenMask = (Integer) mSp.getSharedPreference("outLenMask", outLenMask);
 //        isDugLog = (Boolean) mSp.getSharedPreference("isDugLog", isDugLog);
+
+        UpdataController.setUpdateUrl(AppUpdateUrl);
         putSetting(context);
     }
 
