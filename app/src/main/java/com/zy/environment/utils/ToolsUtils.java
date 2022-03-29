@@ -57,7 +57,7 @@ public class ToolsUtils {
     /*
     * 进入设置页面
     * */
-    final static int COUNTS = 3;// 点击次数
+    final static int COUNTS = 2;// 点击次数
     final static long DURATION = 1000;// 规定有效时间
     static long[] mHits = new long[COUNTS];
     public static void continuousClick(Activity activity) {
@@ -69,7 +69,7 @@ public class ToolsUtils {
             mHits = new long[COUNTS];//重新初始化数组
             //弹出密码框
             SettingDialog dialog = new SettingDialog(activity);
-            dialog.show();
+            dialog.showDialog(300);
         }
     }
 

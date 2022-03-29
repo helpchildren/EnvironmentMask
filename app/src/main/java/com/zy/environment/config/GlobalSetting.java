@@ -18,8 +18,9 @@ public class GlobalSetting {
 
 
     public static String deviceid;//设备id
-    public static String serialPort = "dev/ttyS0";//设备id
-    public static int outLen = 229;//出货长度
+    public static String serialPortBag = "dev/ttyS0";//
+    public static String serialPortMask = "dev/ttyS1";//
+    public static int outLenBag = 229;//出货长度
     public static int outLenMask = 210;//出货长度
 
     public static boolean isDugLog = true;//是否开启文件日志
@@ -28,8 +29,9 @@ public class GlobalSetting {
     public static void getSetting(Context context){
         SpStorage mSp = new SpStorage(context, "zy-environment");
         wsurl = (String) mSp.getSharedPreference("wsurl", wsurl);
-        serialPort = (String) mSp.getSharedPreference("serialPort", serialPort);
-        outLen = (Integer) mSp.getSharedPreference("outLen", outLen);
+        serialPortBag = (String) mSp.getSharedPreference("serialPortBag", serialPortBag);
+        serialPortMask = (String) mSp.getSharedPreference("serialPortMask", serialPortMask);
+        outLenBag = (Integer) mSp.getSharedPreference("outLenBag", outLenBag);
         outLenMask = (Integer) mSp.getSharedPreference("outLenMask", outLenMask);
 //        isDugLog = (Boolean) mSp.getSharedPreference("isDugLog", isDugLog);
 
@@ -40,8 +42,9 @@ public class GlobalSetting {
     public static void putSetting(Context context){
         SpStorage mSp = new SpStorage(context, "zy-environment");
         mSp.put("wsurl", wsurl);
-        mSp.put("serialPort", serialPort);
-        mSp.put("outLen", outLen);
+        mSp.put("serialPortBag", serialPortBag);
+        mSp.put("serialPortMask", serialPortMask);
+        mSp.put("outLenBag", outLenBag);
         mSp.put("outLenMask", outLenMask);
 //        mSp.put("isDugLog", isDugLog);
         mSp.apply();

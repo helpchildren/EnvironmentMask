@@ -32,6 +32,7 @@ import com.zy.environment.bean.AdvBean;
 import com.zy.environment.bean.MsgBean;
 import com.zy.environment.bean.MsgType;
 import com.zy.environment.config.GlobalSetting;
+import com.zy.environment.machine.MachineController;
 import com.zy.environment.utils.DownloadUtil;
 import com.zy.environment.utils.FileStorage;
 import com.zy.environment.utils.FylToast;
@@ -73,7 +74,7 @@ public class MainActivity extends BaseActivity {
     private TextView tvVersion;
 
     private final Gson gson = new Gson();
-    private MachineManage machineManage;//硬件连接
+    private MachineController machineController;//硬件连接
     private String order_sn = "";
     private String order_type = "";
 
@@ -113,18 +114,32 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         OkWebSocket.closeAllNow();
-        if (machineManage != null)
-            machineManage.closeDevice();
+        if (machineController != null)
+            machineController.closeDevice();
         DialogUtils.getInstance().releaseDialog();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handlerEvent(String event) {
-        Logger.d("MainActivity", "应用刷新");
-        OkWebSocket.closeAllNow();
-        if (machineManage != null)
-            machineManage.closeDevice();
-        initData();//刷新连接
+        if("testBag".equals(event)){
+            Logger.d("MainActivity", "测试出袋子");
+            if (machineController != null){
+                machineController.setOutBagLength(GlobalSetting.outLenBag);
+                machineController.outGoods("0");
+            }
+        }else if("testMask".equals(event)){
+            Logger.d("MainActivity", "测试出口罩");
+            if (machineController != null){
+                machineController.setOutMaskLength(GlobalSetting.outLenMask);
+                machineController.outGoods("1");
+            }
+        }else {
+            Logger.d("MainActivity", "应用刷新");
+            OkWebSocket.closeAllNow();
+            if (machineController != null)
+                machineController.closeDevice();
+            initData();//刷新连接
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -170,11 +185,8 @@ public class MainActivity extends BaseActivity {
         GlobalSetting.getSetting(activity);
         websocketConnect();
         //获取硬件控制
-        machineManage = MachineFactroy.init();
-        machineManage.setOutBagLength(GlobalSetting.outLen);
-        machineManage.setOutMaskLength(GlobalSetting.outLenMask);
-        machineManage.setDevicesPort(GlobalSetting.serialPort);
-        machineManage.openDevice(mListener);
+        machineController = new MachineController();
+        machineController.openDevice(mListener);
     }
 
     /*
@@ -283,9 +295,8 @@ public class MainActivity extends BaseActivity {
             case MsgType.TYPE_OUT://出货
                 order_sn = msgBean.getOrder_sn();
                 order_type = msgBean.getOrder_type();
-                int orderType = "1".equals(order_type)?1:0;
                 //调用硬件部分
-                machineManage.outGoods(orderType);
+                machineController.outGoods(order_type);
                 break;
             case MsgType.TYPE_HEART://心跳
 
@@ -505,8 +516,6 @@ public class MainActivity extends BaseActivity {
     private void updateQRcode(String qrcode){
         Glide.with(activity)
                 .load(qrcode)
-//                .placeholder(R.drawable.qrcode_bg)
-//                .error(R.drawable.qrcode_bg)
                 .centerCrop()
                 .into(ivScanCode);
     }

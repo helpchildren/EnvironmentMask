@@ -49,6 +49,9 @@ public class DialogUtils {
     private ErrDialog errDialog;
 
     public void showErrDialog(Context context, String msg) {
+        if (context == null){
+            return;
+        }
         if(errDialog == null){
             errDialog = new ErrDialog(context);// 创建自定义样式dialog
         }

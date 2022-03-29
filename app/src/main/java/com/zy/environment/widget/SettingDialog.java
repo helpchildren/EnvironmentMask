@@ -1,18 +1,12 @@
 package com.zy.environment.widget;
 
 import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zy.environment.R;
@@ -26,7 +20,8 @@ import androidx.annotation.NonNull;
 
 public class SettingDialog extends BaseDialog {
 
-    private EditText ed_input, eDeviceserialPort, eWsurl, eOutlen, eOutlenMask;
+    private EditText ed_input, eSerialPortBag, eSerialPortMask, eWsurl, eOutlenBag, eOutlenMask;
+    private Button btnTestBag, btnTestMask;
     private LinearLayout llPassword, llSetting;
     private Switch s_isDebugLog;
 
@@ -44,9 +39,12 @@ public class SettingDialog extends BaseDialog {
         Button btnOk = (Button) findViewById(R.id.btn_ok);
         llPassword = (LinearLayout) findViewById(R.id.ll_password);
         llSetting = (LinearLayout) findViewById(R.id.ll_setting);
-        eDeviceserialPort = (EditText) findViewById(R.id.e_deviceserialPort);
+        eSerialPortBag = (EditText) findViewById(R.id.e_serialPortBag);
+        eSerialPortMask = (EditText) findViewById(R.id.e_serialPortMask);
+        btnTestBag = (Button) findViewById(R.id.btn_testBag);
+        btnTestMask = (Button) findViewById(R.id.btn_testMask);
         eWsurl  = (EditText) findViewById(R.id.e_wsurl);
-        eOutlen  = (EditText) findViewById(R.id.e_outlen);
+        eOutlenBag = (EditText) findViewById(R.id.e_outlen);
         eOutlenMask  = (EditText) findViewById(R.id.e_outlen_mask);
         s_isDebugLog  = (Switch) findViewById(R.id.s_Log);
 
@@ -58,8 +56,9 @@ public class SettingDialog extends BaseDialog {
         });
 
         eWsurl.setText(GlobalSetting.wsurl);
-        eDeviceserialPort.setText(GlobalSetting.serialPort);
-        eOutlen.setText(GlobalSetting.outLen+"");
+        eSerialPortBag.setText(GlobalSetting.serialPortBag);
+        eSerialPortMask.setText(GlobalSetting.serialPortMask);
+        eOutlenBag.setText(GlobalSetting.outLenBag +"");
         eOutlenMask.setText(GlobalSetting.outLenMask+"");
 
         btnOk.setOnClickListener(new View.OnClickListener() {
@@ -67,16 +66,18 @@ public class SettingDialog extends BaseDialog {
             public void onClick(View v) {
                 if (isShowSet){
                     if (Validate.isNull(eWsurl.getText().toString())
-                            || Validate.isNull(eDeviceserialPort.getText().toString())
-                            || Validate.isNull(eOutlen.getText().toString())
+                            || Validate.isNull(eSerialPortBag.getText().toString())
+                            || Validate.isNull(eSerialPortMask.getText().toString())
+                            || Validate.isNull(eOutlenBag.getText().toString())
                             || Validate.isNull(eOutlenMask.getText().toString())){
                         FylToast.makeText(getContext(), "配置项不能为空", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     GlobalSetting.wsurl = eWsurl.getText().toString();
-                    GlobalSetting.serialPort = eDeviceserialPort.getText().toString();
-                    GlobalSetting.outLen = Integer.parseInt(eOutlen.getText().toString());
+                    GlobalSetting.serialPortBag = eSerialPortBag.getText().toString();
+                    GlobalSetting.serialPortMask = eSerialPortMask.getText().toString();
+                    GlobalSetting.outLenBag = Integer.parseInt(eOutlenBag.getText().toString());
                     GlobalSetting.outLenMask = Integer.parseInt(eOutlenMask.getText().toString());
                     //保存
                     GlobalSetting.putSetting(getContext());
@@ -85,7 +86,7 @@ public class SettingDialog extends BaseDialog {
                     dismiss();
                 }else {
                     String password = ed_input.getText().toString();
-                    if ("zy123".equals(password)) {
+                    if ("123456".equals(password)) {
                         isShowSet = true;
                         llPassword.setVisibility(View.GONE);
                         llSetting.setVisibility(View.VISIBLE);
@@ -102,6 +103,22 @@ public class SettingDialog extends BaseDialog {
                 dismiss();
             }
         });
+        btnTestBag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GlobalSetting.outLenBag = Integer.parseInt(eOutlenBag.getText().toString());
+                EventBusUtils.post("testBag");
+            }
+        });
+        btnTestMask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GlobalSetting.outLenMask = Integer.parseInt(eOutlenMask.getText().toString());
+                EventBusUtils.post("testMask");
+            }
+        });
+
+
     }
 
 

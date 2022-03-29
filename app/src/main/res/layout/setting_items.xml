@@ -11,6 +11,7 @@
     android:padding="15dp">
 
     <LinearLayout
+
         android:id="@+id/ll_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,13 +49,26 @@
 
             <TextView
                 style="@style/settingtextview"
-                android:text="通讯串口:" />
+                android:text="袋子串口:" />
 
             <EditText
-                android:id="@+id/e_deviceserialPort"
+                android:id="@+id/e_serialPortBag"
+                android:layout_weight="1"
                 style="@style/settingedittext"
                 android:hint="请输入串口号"
                 android:text="dev/ttyS0"
+                android:inputType="textPersonName" />
+
+            <TextView
+                style="@style/settingtextview"
+                android:text="口罩串口:" />
+
+            <EditText
+                android:id="@+id/e_serialPortMask"
+                android:layout_weight="1"
+                style="@style/settingedittext"
+                android:hint="请输入串口号"
+                android:text="dev/ttyS1"
                 android:inputType="textPersonName" />
         </LinearLayout>
 
@@ -90,6 +104,23 @@
                 android:text="229"
                 android:inputType="number" />
 
+            <Button
+                android:id="@+id/btn_testBag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/setting_btn_ok"
+                android:padding="10dp"
+                android:text="测试出货"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/settingItem"
+            android:orientation="horizontal">
+
             <TextView
                 style="@style/settingtextview"
                 android:text="口罩长度（单位毫米）:" />
@@ -101,6 +132,18 @@
                 android:hint="请输入出货长度"
                 android:text="210"
                 android:inputType="number" />
+
+            <Button
+                android:id="@+id/btn_testMask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/setting_btn_ok"
+                android:padding="10dp"
+                android:text="测试出货"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
         </LinearLayout>
 
     </LinearLayout>

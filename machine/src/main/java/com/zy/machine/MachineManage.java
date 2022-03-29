@@ -14,10 +14,7 @@ public abstract class MachineManage {
     public abstract void setBaudRate(int baudRate);
 
     //设置出货长度
-    public abstract void setOutBagLength(int outLength);
-
-    //设置口罩出货长度
-    public abstract void setOutMaskLength(int outLength);
+    public abstract void setOutLength(int outLength);
 
     //打开连接
     public abstract void openDevice(OnDataListener listener);

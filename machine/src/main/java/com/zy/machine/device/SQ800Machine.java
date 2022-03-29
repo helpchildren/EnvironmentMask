@@ -21,10 +21,10 @@ public class SQ800Machine extends MachineManage {
     private final TicketModule obj_tcm;
 
     private int baudRate = 9600;//波特率
-    private int outBagLength = 229;//袋子出货长度 单位毫米
-    private int outMaskLength = 210;//口罩出货长度 单位毫米
+    private int outLength = 229;//出货长度 单位毫米   袋子229    口罩210
     private int iCurDevAddr	= 0;	// 当前选中的设备地址
-    private String devicesPort = "/dev/ttyS0";//串口号
+    private int outType	= 0;	// 出货类型
+    private String devicesPort = "/dev/ttyS0";//串口号  口罩是1 袋子是0
     private OnDataListener listener;
 
     public SQ800Machine() {
@@ -40,13 +40,8 @@ public class SQ800Machine extends MachineManage {
         this.devicesPort = devicesPort;
     }
     //设置出货长度
-    public void setOutBagLength(int outBagLength) {
-        this.outBagLength = outBagLength;
-    }
-
-    //设置出货长度
-    public void setOutMaskLength(int outMaskLength) {
-        this.outMaskLength = outMaskLength;
+    public void setOutLength(int outLength) {
+        this.outLength = outLength;
     }
 
     public void openDevice(OnDataListener listener) {
@@ -76,8 +71,8 @@ public class SQ800Machine extends MachineManage {
 
     //0袋子 1口罩
     public void outGoods(int type){
+        this.outType = type;
         if (flag){
-            iCurDevAddr = type;
             isOutGoodsFlag = true;
         }else {
             if (listener != null) listener.onError(1000,"控制机头未连接");
@@ -97,8 +92,8 @@ public class SQ800Machine extends MachineManage {
             public void run() {
                 while (flag){
                     if (isOutGoodsFlag){
-                        listener.onStart(iCurDevAddr);
-                        int ret = obj_tcm.dgCutTicket(fd, iCurDevAddr,TicketModule.TICKET_OUT_CAL_MILLIMETER ,  iCurDevAddr==1?outMaskLength:outBagLength,9);
+                        listener.onStart(outType);
+                        int ret = obj_tcm.dgCutTicket(fd, iCurDevAddr,TicketModule.TICKET_OUT_CAL_MILLIMETER , outLength,9);
                         switch(ret) {
                             case TicketModule.RSLT_OUT_TICKET_SUCC:
                                 listener.onSuccess();

@@ -1,7 +1,5 @@
 package com.zy.machine;
 
-import android.content.Context;
-
 import com.zy.machine.device.SQ800Machine;
 
 public class MachineFactroy {
