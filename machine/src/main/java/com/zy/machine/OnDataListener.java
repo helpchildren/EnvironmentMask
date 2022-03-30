@@ -1,15 +1,6 @@
 package com.zy.machine;
 
 public interface OnDataListener {
-    /*
-    * 设备连接成功回调
-    * */
-    void onConnect();
-
-    /*
-     * 设备断开连接
-     * */
-    void onDisConnect();
 
     /*
      * 异常回调
@@ -20,7 +11,7 @@ public interface OnDataListener {
      * errcode 1004 卡袋
      * errcode 1005 串通讯错误
      * errcode 1006 出货失败
-     * errcode 1006 出货失败
+     * errcode 1007 未初始化
      * */
     void onError(int errcode, String err);
 

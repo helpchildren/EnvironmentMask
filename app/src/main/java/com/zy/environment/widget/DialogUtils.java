@@ -57,7 +57,7 @@ public class DialogUtils {
         }
         if (!errDialog.isShowing()) {
             errDialog.message(msg);
-            errDialog.show();
+            errDialog.showDialog(60);
         }
     }
 

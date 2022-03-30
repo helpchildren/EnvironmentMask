@@ -40,8 +40,6 @@ import com.zy.environment.utils.ToolsUtils;
 import com.zy.environment.utils.Validate;
 import com.zy.environment.utils.log.Logger;
 import com.zy.environment.widget.DialogUtils;
-import com.zy.machine.MachineFactroy;
-import com.zy.machine.MachineManage;
 import com.zy.machine.OnDataListener;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -115,7 +113,7 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         OkWebSocket.closeAllNow();
         if (machineController != null)
-            machineController.closeDevice();
+            machineController.destroy();
         DialogUtils.getInstance().releaseDialog();
     }
 
@@ -137,7 +135,7 @@ public class MainActivity extends BaseActivity {
             Logger.d("MainActivity", "应用刷新");
             OkWebSocket.closeAllNow();
             if (machineController != null)
-                machineController.closeDevice();
+                machineController.destroy();
             initData();//刷新连接
         }
     }
@@ -186,7 +184,7 @@ public class MainActivity extends BaseActivity {
         websocketConnect();
         //获取硬件控制
         machineController = new MachineController();
-        machineController.openDevice(mListener);
+        machineController.init(mListener);
     }
 
     /*
@@ -331,16 +329,6 @@ public class MainActivity extends BaseActivity {
     * */
     private final OnDataListener mListener =
             new OnDataListener() {
-
-                @Override
-                public void onConnect() {
-                    Logger.d(TAG,"机头 onConnect");
-                }
-
-                @Override
-                public void onDisConnect() {
-                    Logger.d(TAG,"机头 onDisConnect");
-                }
 
                 @Override
                 public void onError(int errcode,String err) {

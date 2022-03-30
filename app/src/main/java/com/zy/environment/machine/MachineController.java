@@ -11,17 +11,17 @@ public class MachineController {
     private MachineManage machineMask;//口罩控制器
 
 
-    public void openDevice(OnDataListener listener){
+    public void init(OnDataListener listener){
         //获取硬件控制
         machineBag = new SQ800Machine();//鼎戟
         machineBag.setOutLength(GlobalSetting.outLenBag);
         machineBag.setDevicesPort(GlobalSetting.serialPortBag);
-        machineBag.openDevice(listener);
+        machineBag.init(listener);
 
         machineMask = new SQ800Machine();//鼎戟
         machineMask.setOutLength(GlobalSetting.outLenMask);
         machineMask.setDevicesPort(GlobalSetting.serialPortMask);
-        machineMask.openDevice(listener);
+        machineMask.init(listener);
 
     }
 
@@ -40,15 +40,16 @@ public class MachineController {
             machineMask.outGoods(1);
         }
     }
+
     /*
     * 关闭设备
     * */
-    public void closeDevice(){
+    public void destroy(){
         if (machineBag != null){
-            machineBag.closeDevice();
+            machineBag.destroy();
         }
         if (machineMask != null){
-            machineMask.closeDevice();
+            machineMask.destroy();
         }
     }
 

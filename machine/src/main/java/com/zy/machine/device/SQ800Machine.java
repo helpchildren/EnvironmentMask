@@ -17,13 +17,12 @@ public class SQ800Machine extends MachineManage {
     private Thread receiveThread = null;
     private boolean flag = false;
 
-    private int fd;
+    private int fd = -1;
     private final TicketModule obj_tcm;
 
     private int baudRate = 9600;//波特率
     private int outLength = 229;//出货长度 单位毫米   袋子229    口罩210
     private int iCurDevAddr	= 0;	// 当前选中的设备地址
-    private int outType	= 0;	// 出货类型
     private String devicesPort = "/dev/ttyS0";//串口号  口罩是1 袋子是0
     private OnDataListener listener;
 
@@ -44,41 +43,35 @@ public class SQ800Machine extends MachineManage {
         this.outLength = outLength;
     }
 
-    public void openDevice(OnDataListener listener) {
+
+    public void init(OnDataListener listener) {
         this.listener = listener;
-        fd = obj_tcm.dgOpenPort(devicesPort, baudRate);
-        Log.d(TAG,"dgOpenPort :" + fd);
-        if(fd > 0){
-            flag = true;
-            receiveThread();
-            if (listener != null) listener.onConnect();
-        }else{
-            if (listener != null) listener.onError(1000,"串口"+devicesPort+" 打开失败");
-        }
+        flag = true;
+        isOutGoodsFlag = false;//出货标志
+        receiveThread();
     }
 
-    public void closeDevice() {
+    public void destroy() {
         flag = false;
         isOutGoodsFlag = false;
         if (receiveThread != null)
             receiveThread = null;
-        obj_tcm.dgReleasePort(fd);
-        if (listener != null)
-            listener.onDisConnect();
     }
 
     private boolean isOutGoodsFlag = false;//出货标志
 
     //0袋子 1口罩
     public void outGoods(int type){
-        this.outType = type;
         if (flag){
-            isOutGoodsFlag = true;
+            if (!isOutGoodsFlag){
+                fd = -1;
+                listener.onStart(type);
+                isOutGoodsFlag = true;
+            }
         }else {
-            if (listener != null) listener.onError(1000,"控制机头未连接");
+            sendErrMsg(1007, "控制机头尚未初始化");
         }
     }
-
 
     /**
      * 接收数据线程
@@ -92,17 +85,26 @@ public class SQ800Machine extends MachineManage {
             public void run() {
                 while (flag){
                     if (isOutGoodsFlag){
-                        listener.onStart(outType);
+
+                        //判断是否先打开设备 未打开则先打开串口
+                        if (fd <= 0){
+                            fd = obj_tcm.dgOpenPort(devicesPort, baudRate);
+                            if(fd <= 0){
+                                sendErrMsg(1000,"串口"+devicesPort+" 打开失败");
+                                return;
+                            }
+                        }
+                        //出货
                         int ret = obj_tcm.dgCutTicket(fd, iCurDevAddr,TicketModule.TICKET_OUT_CAL_MILLIMETER , outLength,9);
                         switch(ret) {
                             case TicketModule.RSLT_OUT_TICKET_SUCC:
                                 listener.onSuccess();
                                 break;
                             case TicketModule.RSLT_OUT_TICKET_NOPAPER:
-                                listener.onError(1001,"出货失败:无货");
+                                sendErrMsg(1001,"出货失败:无货");
                                 break;
                             case TicketModule.RSLT_OUT_TICKET_NOT_TAKEN:
-                                listener.onError(1002,"出货失败:出货口有货未取走");
+                                sendErrMsg(1002,"出货失败:出货口有货未取走");
                                 break;
                             case TicketModule.RSLT_OUT_TICKET_KNIFE_ERR:
                                 if(reset == 0){
@@ -110,7 +112,7 @@ public class SQ800Machine extends MachineManage {
                                     reset++;
                                     continue;
                                 }
-                                listener.onError(1003,"出货失败:切刀故障");
+                                sendErrMsg(1003,"出货失败:切刀故障");
                                 break;
                             case TicketModule.RSLT_OUT_TICKET_PAPERJAM:
                                 if(reset == 0){
@@ -118,14 +120,15 @@ public class SQ800Machine extends MachineManage {
                                     reset++;
                                     continue;
                                 }
-                                listener.onError(1004,"出货失败:发生卡袋");
+                                sendErrMsg(1004,"出货失败:发生卡袋");
                                 break;
                             default:
-                                listener.onError(1005,"出货失败:通讯错误 错误码："+ret);
+                                sendErrMsg(1005,"出货失败:通讯错误 错误码："+ret);
                                 break;
                         }
                         reset = 0;//成功返回 重置恢复标志
                         isOutGoodsFlag = false;
+                        obj_tcm.dgReleasePort(fd);//关闭串口
                     }
                     SystemClock.sleep(1000);
                 }
@@ -134,7 +137,6 @@ public class SQ800Machine extends MachineManage {
         //启动接收线程
         receiveThread.start();
     }
-
 
     /*
     * 恢复指令
@@ -147,6 +149,13 @@ public class SQ800Machine extends MachineManage {
             obj_tcm.dgResetPaperJam(fd, iCurDevAddr);
         }else {
             obj_tcm.dgResetKnife(fd, iCurDevAddr);
+        }
+    }
+
+
+    private void sendErrMsg(int errcode, String err){
+        if (listener != null) {
+            listener.onError(errcode,err);
         }
     }
 

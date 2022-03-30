@@ -16,13 +16,11 @@ public abstract class MachineManage {
     //设置出货长度
     public abstract void setOutLength(int outLength);
 
-    //打开连接
-    public abstract void openDevice(OnDataListener listener);
-
-    //关闭连接
-    public abstract void closeDevice();
-
     //出货 0袋子 1口罩
     public abstract void outGoods(int type);
+
+    public abstract void init( OnDataListener listener);
+
+    public abstract void destroy();
 
 }
